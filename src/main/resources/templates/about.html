@@ -1,0 +1,382 @@
+﻿
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; Charset=gb2312">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>关于 - ApeNixX</title>
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">
+    <!--Layui-->
+    <link th:href="@{/static/admin/layui/css/layui.css}" rel="stylesheet" />
+    <!--font-awesome-->
+    <link th:href="@{/static/static/plug/font-awesome/css/font-awesome.min.css}" rel="stylesheet" />
+    <!--全局样式表-->
+    <link th:href="@{/static/static/css/global.css}" rel="stylesheet" />
+    <!-- 本页样式表 -->
+    <link th:href="@{/static/static/css/about.css}" rel="stylesheet" />
+    <!--动画-->
+    <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<!-- 引入页面头header-nav -->
+    <!-- 导航 -->
+    <nav th:replace="header :: header-nav('about')">
+    </nav>
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <div class="blog-container">
+            <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+                <a th:href="@{/article/index/1}" title="网站首页">网站首页&nbsp;</a>
+                <a><cite>&nbsp;关于本站</cite></a>
+            </blockquote>
+            <div class="blog-main">
+                <div class="layui-tab layui-tab-brief shadow" lay-filter="tabAbout">
+                    <ul class="layui-tab-title">
+                        <li lay-id="1">关于博客</li>
+                        <li lay-id="2">关于作者</li>
+                        <li lay-id="3" id="frinedlink">友情链接</li>
+                        <li lay-id="4">留言墙</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item">
+                            <div class="aboutinfo">
+                                <div class="aboutinfo-figure animated fadeInUp">
+                                    <img  src="https://apenixx-oss.oss-cn-shenzhen.aliyuncs.com/public/BlogInfo/avater2.jpg" alt="ApeNixX" />
+                                </div>
+                                <p class="aboutinfo-nickname  animated fadeInLeftBig">ApeNixX 's Blog</p>
+                                <p class="aboutinfo-introduce  animated fadeInRightBig">一个Java小白的个人博客，记录一些学习中值得记录的工具&代码</p>
+                                <p class="aboutinfo-location  animated fadeInLeftBig"><i class="fa fa-link"></i>&nbsp;&nbsp;<a target="_blank" href="http://www.apenixx.top">www.apenixx.top</a></p>
+                                <hr />
+                                <div class="aboutinfo-contact animated bounceIn">
+                                    <a target="_blank" title="网站首页" th:href="@{/article/index/1}"><i class="fa fa-home fa-2x" style="font-size:2.5em;position:relative;top:3px"></i></a>
+                                    <a target="_blank" title="文章专栏" th:href="@{/category/1}"><i class="fa fa-file-text fa-2x"></i></a>
+                                    <a target="_blank" title="资源分享" th:href="@{/user/resource}"><i class="fa fa-tags fa-2x"></i></a>
+                                    <a target="_blank" title="点点滴滴" th:href="@{/user/timeline}"><i class="fa fa-hourglass-half fa-2x"></i></a>
+                                </div>
+
+                                <fieldset class="layui-elem-field layui-field-title animated fadeInUpBig">
+                                    <legend>简介</legend>
+                                    <div class="layui-field-box aboutinfo-abstract">
+                                        <p style="text-align:center;">ApeNixX's Blog是一个由个人开发的博客网站，后端使用SpringBoot+Mybatis+Redis，前端框架使用AmazeUI+LayUI。诞生于2020年02月14日。
+                                        </p>                                        <p  style="text-align:center;">本站采用华为云提供的服务器ECS和阿里云的存储对象OSS。</p>
+
+                                        <h1>第一个版本</h1>
+                                        <p>前端使用的是一个基于Bootstarp的一个前端模板，感觉页面比较简单且布局生硬。当时没想太多，主要是个人爱好写着玩。</p>
+                                        <p>接着购买了服务器，域名，开始制作。</p>
+                                        <h1>第二个版本</h1>
+                                        <p>闲逛各位开发大佬的个人博客时发现Absolutely的网站简洁的风格让我很是喜欢，对比一下发现自己的简直low的不行，于是移除Bootstarp，引入Layui并加入了Animate.css的动画效果，视觉体验稍有提高。</p>
+                                        <h1>当前版本</h1>
+                                        <p>1.优化用户留言、回复功能</p><p>2.优化首页文章列表</p><p>3.优化文章详情页面的图片放大预览功能</p><p>目前大体的功能已经完成，后续将会继续完善功能和页面的优化！</p>
+                                        <h1 style="text-align:center;">The End</h1>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div><!--关于网站End-->
+                        <div class="layui-tab-item">
+                            <div class="aboutinfo">
+                                <div class="aboutinfo-figure animated fadeInUp" >
+                                    <img src="https://apenixx-oss.oss-cn-shenzhen.aliyuncs.com/public/BlogInfo/avater1.jpg"  alt="ApeNixX" />
+                                </div>
+                                <p class="aboutinfo-nickname animated lightSpeedIn">ApeNixX</p>
+                                <p class="aboutinfo-introduce animated lightSpeedIn">一个大三学生，软件工程专业，主修Java，Web前端略懂复制粘贴的精髓。</p>
+                                <p class="aboutinfo-location"><i class="fa fa-location-arrow"></i>&nbsp;广东 - 广州</p>
+                                <hr />
+                                <div class="aboutinfo-contact animated bounceIn">
+                                    <a target="_blank" id="qq1" title="QQ交流" href="javascript:;"><i class="fa fa-qq fa-2x"></i></a>
+                                    <a target="_blank" id="co1" title="给我留言" th:href="@{/user/about#tabIndex=4}"><i class="fa fa-commenting fa-2x"></i></a>
+                                    <a target="_blank" id="wc1" title="微信" href="javascript:;"><i class="fa fa-weixin fa-2x"></i></a>
+                                    <a target="_blank" id="gh1"  href="https://weibo.com/u/3207295037"><i class="fa fa-weibo fa-2x"></i></a>
+                                </div>
+                                <fieldset class="layui-elem-field layui-field-title animated fadeInLeftBig">
+                                    <legend>简介</legend>
+                                    <div class="layui-field-box aboutinfo-abstract abstract-bloger">
+                                        <p style="text-align:center;">ApeNixX，99年，创建本站是因为偶然看到别人的博客网站做的不错，自己也做一个练手，同时总结记录学习经验。</p>
+                                        <h1>个人信息</h1>
+                                        <p>出生于广东，暂居东莞，21年毕业，学渣一枚。</p>
+                                        <h1>个人介绍</h1>
+                                        <p>一个喜欢旅游，喜欢在路上的感觉！喜欢电子音乐的男同学~(偶尔会跟大家分享一些好听的电子音乐，在本站我也会推荐，喜欢的可以关注我的网易云，收藏我自己整理的歌单：七月晴空七月天丶)</p>
+                                        <h1 style="text-align:center;">The End</h1>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div><!--关于作者End-->
+                        <div class="layui-tab-item">
+                            <div class="aboutinfo">
+                                <div class="aboutinfo-figure1" style="display: inline-block; margin: 20px auto;">
+                                    <img style="border-radius: 50%;max-width: 37%;" src="https://apenixx-oss.oss-cn-shenzhen.aliyuncs.com/public/BlogInfo/fl.jpg" alt="友情链接" />
+                                </div>
+                                <p class="aboutinfo-nickname">友情链接</p>
+                                <p class="aboutinfo-introduce">Name：ApeNixX's Blog&nbsp;&nbsp;&nbsp;&nbsp;Site：www.apenixx.top</p>
+                                <p class="aboutinfo-location">
+                                    <i class="fa fa-close red">经常宕机</i>&nbsp;
+                                    <i class="fa fa-close red">不合法规</i>&nbsp;
+                                    <i class="fa fa-close red">插边球站</i>&nbsp;
+                                    <i class="fa fa-close red">红标报毒</i>&nbsp;
+                                    <i class="fa fa-check green">原创优先</i>&nbsp;
+                                    <i class="fa fa-check green">技术优先</i>
+                                </p>
+                                <hr />
+                                <div class="aboutinfo-contact">
+                                    <p style="font-size:2em;">互换友链，携手并进！</p>
+                                </div>
+                                <fieldset class="layui-elem-field layui-field-title">
+                                    <legend>Friend Link</legend>
+                                    <div class="layui-field-box">
+                                        <ul class="friendlink animated lightSpeedIn">
+                                            <li  th:each="fl:${links}">
+                                                <a target="_blank" th:href="@{${fl.url}}" title="Layui" class="friendlink-item">
+                                                    <p class="friendlink-item-pic"><img th:src="@{${fl.img}}" alt="Layui" /></p>
+                                                    <p class="friendlink-item-title" th:text="${fl.blogger}">Layui</p>
+                                                    <p class="friendlink-item-domain" th:text="${fl.url}">layui.com</p>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div><!--友情链接End-->
+                        <div class="layui-tab-item">
+                            <div class="aboutinfo">
+                                <div class="aboutinfo-figure1" style="display: inline-block;margin: 20px auto;">
+                                    <img style="border-radius: 50px;" th:src="@{/static/static/images/messagewall.png}" alt="留言墙" />
+                                </div>
+                                <p class="aboutinfo-nickname">留言墙</p>
+                                <p class="aboutinfo-introduce">本页面可留言、吐槽、提问。欢迎灌水，杜绝广告！</p>
+                                <p class="aboutinfo-location">
+                                    <i class="fa fa-clock-o"></i>&nbsp;<span id="time"></span>
+                                </p>
+                                <hr />
+                                <div class="aboutinfo-contact">
+                                    <p style="font-size:2em;">欢迎各位大佬吐槽！</p>
+                                </div>
+                                <fieldset class="layui-elem-field layui-field-title">
+                                    <legend>Leave a message</legend>
+                                    <div class="layui-field-box">
+                                        <div class="leavemessage" style="text-align:initial">
+                                            <form class="layui-form blog-editor" action="">
+                                                <div class="layui-form-item">
+                                                    <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
+                                                </div>
+                                            </form>
+                                            <ul class="blog-comment">
+                                                <li class="animated zoomIn">
+                                                    <div class="comment-parent">
+                                                        <img th:src="@{/static/static/images/Logo_40.png}" alt="不落阁" />
+                                                        <div class="info">
+                                                            <span class="username">不落阁</span>
+                                                        </div>
+                                                        <div class="content">
+                                                            我为大家做了模拟留言与回复！试试吧！
+                                                        </div>
+                                                        <p class="info info-footer"><span class="time">2017-03-18 18:09</span><a class="btn-reply" href="javascript:;" onclick="btnReplyClick(this)">回复</a></p>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="comment-child">
+                                                        <img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" />
+                                                        <div class="info">
+                                                            <span class="username">Absolutely</span><span>这是用户回复内容</span>
+                                                        </div>
+                                                        <p class="info"><span class="time">2017-03-18 18:26</span></p>
+                                                    </div>
+                                                    <div class="comment-child">
+                                                        <img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" />
+                                                        <div class="info">
+                                                            <span class="username">Absolutely</span><span>这是第二个用户回复内容</span>
+                                                        </div>
+                                                        <p class="info"><span class="time">2017-03-18 18:26</span></p>
+                                                    </div>
+                                                    <!-- 回复表单默认隐藏 -->
+                                                    <div class="replycontainer layui-hide">
+                                                        <form class="layui-form" action="">
+                                                            <div class="layui-form-item">
+                                                                <textarea name="replyContent" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
+                                                            </div>
+                                                            <div class="layui-form-item">
+                                                                <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div><!--留言墙End-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+<footer class="blog-footer">
+    <p><span>Copyright</span><span>&copy;</span><span>2020-2021</span><a href="http://www.apenixx.top">ApeNixX</a><span>Design By LBH</span></p>
+    <p><a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备20013507号</a></p>
+</footer>
+    <!--侧边导航-->
+<ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+    <li sec:authorize="hasAnyRole('ROLE_USER')" class="layui-nav-item" style="margin-bottom: 30px;">
+        <a href="javascript:;" class="blog-user">
+            <!--<img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" title="Absolutely" />-->
+            <img style=" width: 40px;height: 40px;border-radius: 50px;" th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" />
+            <!--<sec:authentication property="principal.id"/>-->
+            <span sec:authentication="name"></span>&nbsp;
+        </a>
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{/user/user}">基本资料</a></dd>
+            <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+            <dd><a th:href="@{/user/user}">安全设置</a></dd>
+            <dd sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')"><a th:href="@{/admin/index}">后台管理</a></dd>
+            <dd><a th:href="@{/logout}">退出登录</a></dd>
+        </dl>
+    </li>
+
+    <li class="layui-nav-item">
+        <a th:href="@{/article/index/1}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+    </li>
+    <li class="layui-nav-item  layui-this">
+        <a th:href="@{/category/1}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/user/archives}"><i class="fa fa-calendar-check-o fa-fw"></i>&nbsp;归档</a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/user/resource}"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/user/timeline}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/user/about}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+    </li>
+    <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+        <a th:href="@{/user/login}">&nbsp;&nbsp;登录</a>
+    </li>
+    <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+        <a th:href="@{/user/register}">&nbsp;&nbsp;注册</a>
+    </li>
+</ul>
+    <!--分享窗体-->
+    <div class="blog-share layui-hide">
+        <div class="blog-share-body">
+            <div style="width: 200px;height:100%;">
+                <div class="bdsharebuttonbox">
+                    <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--遮罩-->
+    <div class="blog-mask animated layui-hide"></div>
+<link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+
+<script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+
+<meting-js
+        id="168853794"
+        lrc-type="0"
+        server="netease"
+        order="random"
+        type="playlist"
+        fixed="true"
+        list-olded="true"
+        list-folded="true"
+        list-max-height="400px"
+        preload="none"
+
+>
+</meting-js>
+
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+    console.log(returnCitySN)
+
+    //返回对象Object {cip: "122.70.200.146", cid: "110000", cname: "北京市"}
+</script>
+    <!-- layui.js -->
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+    <!-- 全局脚本 -->
+    <script th:src="@{/static/static/js/global.js}"></script>
+    <!-- 本页脚本 -->
+    <script th:src="@{/static/static/js/about.js}"></script>
+
+    <script>
+    window.onload = function() {
+        var hash = window.location.hash;
+        if(hash!=""){
+            window.location.hash = hash;
+            window.location = window.location;
+            window.location = window.location;
+        }
+    }
+</script>
+<script>
+    var tips;
+    var layer = layui.layer;
+    $('#qq1').on({
+        mouseover: function () {
+            tips = layer.tips('<img src="https://apenixx-oss.oss-cn-shenzhen.aliyuncs.com/public/BlogInfo/4e8b0825642eb9a33d62e29af9728c2.jpg" style="width:120px;height:120px;"/ >', this, {
+                tips: 1,
+                time: 0
+            })
+        },
+        mouseout: function () {
+            layer.close(tips);
+        }
+    });
+
+    $('#wc1').on({
+        mouseover: function () {
+            tips = layer.tips('<img src="https://apenixx-oss.oss-cn-shenzhen.aliyuncs.com/public/BlogInfo/2dde920c66819a847b4e1b08604df7c.jpg" style="width:120px;height:120px;"/ >', this, {
+                tips: 1,
+                time: 0
+            })
+        },
+        mouseout: function () {
+            layer.close(tips);
+        }
+    })
+    $('#co1').on({
+        mouseover: function () {
+            tips = layer.tips('去留言~', this, {
+                tips: 1,
+                time: 0
+            })
+        },
+        mouseout: function () {
+            layer.close(tips);
+        }
+    })
+    $('#gh1').on({
+        mouseover: function () {
+            tips = layer.tips('去我的微博~', this, {
+                tips: 1,
+                time: 0
+            })
+        },
+        mouseout: function () {
+            layer.close(tips);
+        }
+    })
+
+</script>
+</body>
+</html>
+<script>
+    (function webpackUniversalModuleDefinition(a,b){if(typeof exports==="object"&&typeof module==="object"){module.exports=b()}else{if(typeof define==="function"&&define.amd){define([],b)}else{if(typeof exports==="object"){exports["POWERMODE"]=b()}else{a["POWERMODE"]=b()}}}})(this,function(){return(function(a){var b={};function c(e){if(b[e]){return b[e].exports}var d=b[e]={exports:{},id:e,loaded:false};a[e].call(d.exports,d,d.exports,c);d.loaded=true;return d.exports}c.m=a;c.c=b;c.p="";return c(0)})([function(c,g,b){var d=document.createElement("canvas");d.width=window.innerWidth;d.height=window.innerHeight;d.style.cssText="position:fixed;top:0;left:0;pointer-events:none;z-index:999999";window.addEventListener("resize",function(){d.width=window.innerWidth;d.height=window.innerHeight});document.body.appendChild(d);var a=d.getContext("2d");var n=[];var j=0;var k=120;var f=k;var p=false;o.shake=true;function l(r,q){return Math.random()*(q-r)+r}function m(r){if(o.colorful){var q=l(0,360);return"hsla("+l(q-10,q+10)+", 100%, "+l(50,80)+"%, "+1+")"}else{return window.getComputedStyle(r).color}}function e(){var t=document.activeElement;var v;if(t.tagName==="TEXTAREA"||(t.tagName==="INPUT"&&t.getAttribute("type")==="text")){var u=b(1)(t,t.selectionStart);v=t.getBoundingClientRect();return{x:u.left+v.left,y:u.top+v.top,color:m(t)}}var s=window.getSelection();if(s.rangeCount){var q=s.getRangeAt(0);var r=q.startContainer;if(r.nodeType===document.TEXT_NODE){r=r.parentNode}v=q.getBoundingClientRect();return{x:v.left,y:v.top,color:m(r)}}return{x:0,y:0,color:"transparent"}}function h(q,s,r){return{x:q,y:s,alpha:1,color:r,velocity:{x:-1+Math.random()*2,y:-3.5+Math.random()*2}}}function o(){var t=e();var s=5+Math.round(Math.random()*10);while(s--){n[j]=h(t.x,t.y,t.color);j=(j+1)%500}f=k;if(!p){requestAnimationFrame(i)}if(o.shake){var r=1+2*Math.random();var q=r*(Math.random()>0.5?-1:1);var u=r*(Math.random()>0.5?-1:1);document.body.style.marginLeft=q+"px";document.body.style.marginTop=u+"px";setTimeout(function(){document.body.style.marginLeft="";document.body.style.marginTop=""},75)}}o.colorful=false;function i(){if(f>0){requestAnimationFrame(i);f--;p=true}else{p=false}a.clearRect(0,0,d.width,d.height);for(var q=0;q<n.length;++q){var r=n[q];if(r.alpha<=0.1){continue}r.velocity.y+=0.075;r.x+=r.velocity.x;r.y+=r.velocity.y;r.alpha*=0.96;a.globalAlpha=r.alpha;a.fillStyle=r.color;a.fillRect(Math.round(r.x-1.5),Math.round(r.y-1.5),3,3)}}requestAnimationFrame(i);c.exports=o},function(b,a){(function(){var d=["direction","boxSizing","width","height","overflowX","overflowY","borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth","borderStyle","paddingTop","paddingRight","paddingBottom","paddingLeft","fontStyle","fontVariant","fontWeight","fontStretch","fontSize","fontSizeAdjust","lineHeight","fontFamily","textAlign","textTransform","textIndent","textDecoration","letterSpacing","wordSpacing","tabSize","MozTabSize"];var e=window.mozInnerScreenX!=null;function c(k,l,o){var h=o&&o.debug||false;if(h){var i=document.querySelector("#input-textarea-caret-position-mirror-div");if(i){i.parentNode.removeChild(i)}}var f=document.createElement("div");f.id="input-textarea-caret-position-mirror-div";document.body.appendChild(f);var g=f.style;var j=window.getComputedStyle?getComputedStyle(k):k.currentStyle;g.whiteSpace="pre-wrap";if(k.nodeName!=="INPUT"){g.wordWrap="break-word"}g.position="absolute";if(!h){g.visibility="hidden"}d.forEach(function(p){g[p]=j[p]});if(e){if(k.scrollHeight>parseInt(j.height)){g.overflowY="scroll"}}else{g.overflow="hidden"}f.textContent=k.value.substring(0,l);if(k.nodeName==="INPUT"){f.textContent=f.textContent.replace(/\s/g,"\u00a0")}var n=document.createElement("span");n.textContent=k.value.substring(l)||".";f.appendChild(n);var m={top:n.offsetTop+parseInt(j["borderTopWidth"]),left:n.offsetLeft+parseInt(j["borderLeftWidth"])};if(h){n.style.backgroundColor="#aaa"}else{document.body.removeChild(f)}return m}if(typeof b!="undefined"&&typeof b.exports!="undefined"){b.exports=c}else{window.getCaretCoordinates=c}}())}])});
+    POWERMODE.colorful=true;POWERMODE.shake=false;document.body.addEventListener("input",POWERMODE);
+</script>

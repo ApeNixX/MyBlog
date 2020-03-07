@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>后台 - ApeNixX</title>
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}">
+    <script th:src="@{/static/admin/layui/layui.js}"></script>
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+    .user-photo {
+    width: 200px;
+    height: 120px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+.user-photo p{
+    display: block;
+    width: 100%;
+    height: 25px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    white-space: nowrap;
+    line-height: 25px;
+    overflow: hidden;
+}
+
+.user-photo a.img {
+    display: block;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto;
+    margin-bottom: 0px;
+}
+
+
+    </style>
+</head>
+<body class="layui-layout-body" style="overflow: hidden">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">博客管理系统后台</div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">导航</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;"><img th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" class="layui-nav-img"><span sec:authentication="name"></span></a>
+                <dl class="layui-nav-child">
+                    <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+                    <dd><a th:href="@{/user/user}">安全设置</a></dd>
+                    <dd><a href="/logout">退出登录</a></dd>
+                    <dd><a href="/article/index/1">返回首页</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      
+        <div class="layui-side-scroll">
+            <div class="user-photo">
+                <a class="img" title="我的头像" style="margin-left: 30%;"><img style="width:76px;height:76px;margin-right:10px;border-radius:50%" th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}"></a>
+                <p>你好！<span class="userName" sec:authentication="name"></span>, 欢迎登录</p>
+            </div>
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">layui-icon-search
+                <li class="layui-nav-item" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                    <a  th:href="@{/admin/home}"  target="menuFrame"> <i class="layui-icon layui-icon-home" style="padding: 4%;"></i>后台首页</a>
+                <!-- <dl class="layui-nav-child">
+                    <dd class="main_left"><a>类型查看</a></dd>
+                    <dd class="main_left"><a href="addcategory.html"   target="menuFrame">类型发布</a></dd> -->
+            </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-user" style="padding: 4%;font-size: 19px;"></i>用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/userlist}" target="menuFrame">用户查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/rolelist}" target="menuFrame">角色查看</a></dd>
+                    </dl>
+                </li>
+                   <li class="layui-nav-item" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a href="javascript:;"> <i class="layui-icon layui-icon-note" style="padding: 4%;"></i>类型管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/taglist}"  target="menuFrame">标签查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/categorylist}"  target="menuFrame">类型查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/addcategory}"   target="menuFrame">类型发布</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item "> <a href="javascript:;"> <i class="layui-icon layui-icon-list" style="padding: 4%;font-size: 19px;"></i>博客管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/bloglist}" target="menuFrame">博客查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/editor}"  target="menuFrame">博客发布</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-date" style="padding: 4%;font-size: 19px;"></i>日记管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/diarylist}" target="menuFrame">日记查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/diary}"  target="menuFrame">日记编辑</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-link" style="padding: 4%;font-size: 19px;"></i>友链管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/linklist}" target="menuFrame">友链查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/link}"  target="menuFrame">友链添加</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-util" style="padding: 4%;font-size: 19px;"></i>资源管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/resourcelist}" target="menuFrame">资源查看</a></dd>
+                        <dd class="main_left"><a th:href="@{/admin/resource}"  target="menuFrame">资源上传</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-reply-fill" style="padding: 4%;font-size: 19px;"></i>评论管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/commentlist}" target="menuFrame">评论查看</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-dialogue" style="padding: 4%;font-size: 19px;"></i>留言管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/admin/msglist}" target="menuFrame">留言查看</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item " sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"> <a href="javascript:;"> <i class="layui-icon layui-icon-website" style="padding: 4%;font-size: 19px;"></i>系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="main_left"><a th:href="@{/druid}" target="menuFrame">Druid监控</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" >
+        <!-- 内容主体区域 -->
+        <iframe id="menuFrame"  name="menuFrame" th:src="@{/admin/home}" width="100%" height="100%" style="overflow: visible;"
+        scrolling="no" frameborder="no"></iframe>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © ApeNixX - LayUi
+    </div>
+</div>
+<!--<script src="../src/layui.js"></script>-->
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+    //获得登录用户未读消息
+    $.ajax({
+        type:'post',
+        url:'/user/getUserNews',
+        dataType:'json',
+        data:{
+        },
+        success:function (data) {
+            var thisPageName = window.location.pathname + window.location.search;
+            var news = $('.news');
+            if(data['status'] != 101 && data['data']['result'] != 0){
+                news.append($('<span class="layui-badge">' + data['data']['result']['allNewsNum'] + '</span>'));
+                if(thisPageName === "/user/user"){
+                    if(data['data']['result']['commentNum'] !== 0){
+                        $('.commentMessage').find('a').append($('<span class="commentNotReadNum am-margin-right am-fr am-badge am-badge-danger am-round">' + data['data']['result']['commentNum'] + '</span>'));
+                    }
+                    if(data['data']['result']['leaveMessageNum'] !== 0){
+                        $('.leaveWord').find('a').append($('<span class="leaveMessageNotReadNum am-margin-right am-fr am-badge am-badge-danger am-round">' + data['data']['result']['leaveMessageNum'] + '</span>'));
+                    }
+                }
+            }
+        },
+        error:function () {
+        }
+    });
+
+</script>
+</body>
+</body>
+</html>

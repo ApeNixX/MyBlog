@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <title>403 - ApeNixX</title>
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">      <link href="https://lib.baomitu.com/amazeui/2.7.2/css/amazeui.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/static/css/all.css}">
+    <link rel="stylesheet" th:href="@{/static/css/errorpage.css}">
+    <link href="https://lib.baomitu.com/font-awesome/5.8.0/css/fontawesome.min.css" rel="stylesheet">
+    <!--Layui-->
+    <link th:href="@{/static/admin/layui/css/layui.css}" rel="stylesheet" />
+    <!--font-awesome-->
+    <link th:href="@{/static/static/plug/font-awesome/css/font-awesome.min.css}" rel="stylesheet" />
+    <!--全局样式表-->
+    <link th:href="@{/static/static/css/global.css}" rel="stylesheet" />
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://lib.baomitu.com/amazeui/2.7.2/js/amazeui.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--引入共有头部-->
+    <!-- <div th:replace="header :: header"></div> -->
+    <!-- 导航 -->
+    <nav th:replace="header :: header-nav('aa')">
+    </nav>
+    <div id="main" style="margin-top: 5%;">
+        <div class="error403Page">
+            <img th:src="@{/static/img/errorpage/403.jpg}"/>
+        </div>
+        <div class="errorWords">
+            <div class="errorWords_display" style="margin-top: 30px">
+                <p>不好意思，您的权限不够，无法访问</p>
+                <p><a th:href="@{/article/index/1}"><u>返回首页</u></a><a href="#" style="margin-left: 30px"></a></p>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <footer class="blog-footer">
+        <p><span>Copyright</span><span>&copy;</span><span>2020-2021</span><a href="http://www.apenixx.top">ApeNixX</a><span>Design By LBH</span></p>
+        <p><a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备20013507号</a></p>
+    </footer>
+    <!--侧边导航-->
+    <!--侧边导航-->
+
+    <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+        <li sec:authorize="hasAnyRole('ROLE_USER')" class="layui-nav-item" style="margin-bottom: 30px;">
+            <a href="javascript:;" class="blog-user">
+                <!--<img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" title="Absolutely" />-->
+                <img style=" width: 40px;height: 40px;border-radius: 50px;" th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" />
+                <!--<sec:authentication property="principal.id"/>-->
+                <span sec:authentication="name"></span>&nbsp;
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="@{/user/user}">基本资料</a></dd>
+                <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+                <dd><a th:href="@{/user/user}">安全设置</a></dd>
+                <dd sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')"><a th:href="@{/admin/index}">后台管理</a></dd>
+                <dd><a th:href="@{/logout}">退出登录</a></dd>
+            </dl>
+        </li>
+
+        <li class="layui-nav-item">
+            <a th:href="@{/article/index/1}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/category/1}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+        </li>
+        <li class="layui-nav-item  layui-this">
+            <a th:href="@{/user/archives}"><i class="fa fa-tags fa-fw"></i>&nbsp;归档</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/resource}"><i class="fa fa-road fa-fw"></i>&nbsp;资源分享</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/timeline}"><i class="fa fa-info fa-fw"></i>&nbsp;点点滴滴</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/about}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/login}">&nbsp;&nbsp;登录</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/register}">&nbsp;&nbsp;注册</a>
+        </li>
+    </ul>
+    <!--分享窗体-->
+    <div class="blog-share layui-hide">
+        <div class="blog-share-body">
+            <div style="width: 200px;height:100%;">
+                <div class="bdsharebuttonbox">
+                    <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--遮罩-->
+    <div class="blog-mask animated layui-hide"></div>
+</div>
+
+    <!-- layui.js -->
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+    <!-- 全局脚本 -->
+    <script th:src="@{/static/static/js/global.js}"></script>
+<!--<script th:src="@{/static/js/all.js}"></script>-->
+</body>
+</html>

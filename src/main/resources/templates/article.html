@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="header::header-fragment">
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">
+</head>
+<title>文章 - ApeNixX</title>
+
+<!--本页样式表-->
+<link th:href="@{/static/static/css/article.css}" rel="stylesheet" />
+<!--动画-->
+<link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+
+<script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+<meting-js
+        id="168853794"
+        lrc-type="0"
+        server="netease"
+        order="random"
+        type="playlist"
+        fixed="true"
+        list-olded="true"
+        list-folded="true"
+        list-max-height="400px"
+        preload="none"
+
+>
+</meting-js>
+
+<style>
+    .page {
+        height: 34px;
+        line-height: 34px;
+    }
+    .page a{
+        display: inline-block;
+        border: 1px solid #ededed;
+        padding: 0 12px;
+        color: #3e3e3e;
+        font-size: 14px;
+        font-family: tahoma,simsun;
+        text-decoration: none;
+
+    }
+    .page a:hover {
+        color: #009688;
+        border-color: #009688;
+    }
+    .page .active,
+    .page .active:hover {
+        color: #fff;
+        background: #009688;
+        border: solid 1px #009688;
+
+    }
+
+
+</style>
+
+<body>
+    <!-- 导航 -->
+    <nav th:replace="header::header-nav('article')">
+    </nav>
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <div class="blog-container">
+            <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+                <a th:href="@{/article/index/1}" title="网站首页">网站首页&nbsp;</a>
+                <a><cite>&nbsp;文章专栏</cite></a>
+            </blockquote>
+            <div class="blog-main">
+                <div class="blog-main-left">
+                    <div th:if="${#lists.isEmpty(pageInfo.list)}" class="shadow" style="text-align:center;font-size:16px;padding:40px 15px;background:#fff;margin-bottom:15px;">
+                        未搜索到与【<span style="color: #FF5722;" th:text="${p1}">keywords</span>】有关的文章，随便看看吧！
+                    </div>
+                    <div class="article shadow animated zoomIn" th:each="blog,iterStar:${pageInfo.list}">
+                        <div class="article-left">
+                            <img th:src="@{${blog.articleCover}}" alt="基于laypage的layui扩展模块（pagesize.js）！" />
+                        </div>
+                        <div class="article-right">
+                            <div class="article-title">
+                                <a th:href="@{'/article/details/'+${blog.articleId}}" th:text="${blog.articleTitle}"></a>
+                                <span th:class="${blog.articleType == '原创'}? 'article_is_yc' :'article_is_zz'" th:text="${blog.articleType}"></span>&nbsp;<img th:if="${blog.looks gt 500}" style="margin-top: -2%;" th:src="@{/static/static/images/hot2.png}" />
+                            </div>
+                            <div class="article-abstract">
+                                <span th:text="${blog.articleTabloid}"></span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="article-footer">
+                            <i class="fa fa-clock-o"></i>&nbsp;&nbsp;<span th:text="${blog.publishDate}"></span>
+                            <i class="fa fa-user"></i>&nbsp;&nbsp;<span th:text="${blog.originalAuthor}" class="article-author"></span>
+                            <i class="fa fa-folder"></i>&nbsp;&nbsp;<a th:href="@{'/category/1?category='+${blog.articleCategories}}"><th:block th:text="${blog.articleCategories}"></th:block></a>
+                            &nbsp;&nbsp;
+                            <i class="fa fa-tag"></i>&nbsp;<th:block th:each="sortName:${blog.tagValue}">
+                            <a th:href="@{'/article/index/1?tag='+${sortName}}" th:text="${sortName}"></a>&nbsp;
+                        </th:block>
+
+                            <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;<th:block th:text="${blog.looks}"></th:block></span>
+                            <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;<th:block th:text="${blog.commentNum}"></th:block></span>
+                        </div>
+                    </div>
+                    <div  class="page" style="text-align: center;">
+                        <a  th:if="${pageInfo.hasPreviousPage} == true" href="javascript:;"  th:href="@{'/category/'+${pageInfo.prePage}}"  class="a1" data-page="0">上一页</a>
+                        <a th:if="${pageInfo.hasPreviousPage} == false"   class="layui-laypage-prev layui-disabled" data-page="0">上一页</a>
+
+                        <a  th:if="${pageInfo.pages} gt 0"  th:href="@{'/category/' + ${i}}"
+                           th:each="i :${#numbers.sequence(1, pageInfo.pages)}"
+                           th:class="${pageInfo.pageNum == i}? 'active' :'a1' "
+                           th:text="${i}">
+                        </a>
+
+                        <a  th:href="@{'/category/' + ${pageInfo.nextPage}}" class="a1" th:if="${pageInfo.hasNextPage} == true">下一页</a>
+                        <a  class="layui-laypage-next  layui-disabled" th:if="${pageInfo.hasNextPage} == false">下一页</a>
+
+                    </div>
+
+
+                </div>
+                <div class="blog-main-right">
+                    <div class="blog-search">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="search-keywords  shadow">
+                                    <input type="text" id="searchParam" name="searchParam"  placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="search-submit  shadow">
+                                    <a class="search-btn" lay-submit="formSearch" lay-filter="formSearch"><i class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="article-category shadow animated fadeInRight">
+                        <div class="article-category-title"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;分类导航</div>
+                        <a  th:each="category:${categories}" th:href="@{'/category/1?category='+${category}}"
+                           th:text="${category}"></a>
+
+                        <div class="clear"></div>
+                    </div>
+                    <div class="blog-card shadow animated fadeInRight">
+                        <!--<div class="hotusers-header"><i class="fa fa-thumbs-up" aria-hidden="true"></i>&nbsp;作者推荐</div>-->
+                        <div class="blog-card-title">
+                            <span class="icon"><i class="layui-icon" aria-hidden="true"></i></span>
+                            <span class="text">博主推荐</span>
+                        </div>
+                        <ul class="blog-card-ul">
+                            <li th:each="lk,iterStar:${looks}"><span th:class="${iterStar.count}<3 ?'layui-badge':'layui-badge layui-bg-blue'" th:text="${iterStar.count}">1</span><a th:href="@{'/article/details/'+${lk.articleId}}" th:text="${lk.articleTitle}">Web安全之跨站请求伪造CSRF</a><span style="font-size: 12px;float: right;"><th:block th:text="${lk.looks}"></th:block>阅/<th:block th:text="${lk.likes}"></th:block>赞</span></li>
+
+                        </ul>
+                    </div>
+
+                    <!--右边悬浮 平板或手机设备显示-->
+                    <div class="category-toggle"><i class="fa fa-chevron-left"></i></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <footer class="blog-footer">
+        <p><span>Copyright</span><span>&copy;</span><span>2020-2021</span><a href="http://www.apenixx.top">ApeNixX</a><span>Design By LBH</span></p>
+        <p><a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备20013507号</a></p>
+    </footer>
+    <!--侧边导航-->
+
+    <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+        <li sec:authorize="hasAnyRole('ROLE_USER')" class="layui-nav-item" style="margin-bottom: 30px;">
+            <a href="javascript:;" class="blog-user">
+                <!--<img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" title="Absolutely" />-->
+                <img style=" width: 40px;height: 40px;border-radius: 50px;" th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" />
+                <!--<sec:authentication property="principal.id"/>-->
+                <span sec:authentication="name"></span>&nbsp;
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="@{/user/user}">基本资料</a></dd>
+                <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+                <dd><a th:href="@{/user/user}">安全设置</a></dd>
+                <dd sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')"><a th:href="@{/admin/index}">后台管理</a></dd>
+                <dd><a th:href="@{/logout}">退出登录</a></dd>
+            </dl>
+        </li>
+
+        <li class="layui-nav-item">
+            <a th:href="@{/article/index/1}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+        </li>
+        <li class="layui-nav-item  layui-this">
+            <a th:href="@{/category/1}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/archives}"><i class="fa fa-calendar-check-o fa-fw"></i>&nbsp;归档</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/resource}"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/timeline}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/about}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/login}">&nbsp;&nbsp;登录</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/register}">&nbsp;&nbsp;注册</a>
+        </li>
+    </ul>
+    <!--分享窗体-->
+    <div class="blog-share layui-hide">
+        <div class="blog-share-body">
+            <div style="width: 200px;height:100%;">
+                <div class="bdsharebuttonbox">
+                    <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--遮罩-->
+    <div class="blog-mask animated layui-hide"></div>
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- layui.js -->
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+    <!-- 全局脚本 -->
+    <script th:src="@{/static/static/js/global.js}"></script>
+<script type="text/javascript">
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+        if(r!=null)return  decodeURIComponent(r[2]); return null;
+    }
+
+    $('.active ,.a1').click(function () {
+        var query=GetQueryString("category");
+        if(query==null){
+            var href = this.href;
+        }else{
+            var href = this.href+"?category="+query;
+        }
+        window.location.href = href;
+        return false;
+    });
+
+    $(".search-btn").click(function () {
+        var search = $("#searchParam").val();
+        window.location.href = '/searchArticle/1?searchParam='+search;
+    })
+</script>
+
+</body>
+</html>

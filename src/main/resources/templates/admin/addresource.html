@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>上传资源</title>
+    <link th:href="@{/static/admin/layui-v2.5.6/layui-v2.5.6/layui/css/layui.css}" rel="stylesheet" />
+    <script th:src="@{/static/admin/layui-v2.5.6/layui-v2.5.6/layui/layui.js}"></script>
+    <!--这里要改成自己的资源路径-->
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>资源上传</legend>
+</fieldset>
+<form class="layui-form"  action="" style="margin-left: 30px">
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源名字</label>
+        <div class="layui-input-inline">
+            <input style="width: 300px;" type="text" name="resourceName" required  lay-verify="required" placeholder="请输入资源名字" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源URL</label>
+        <div class="layui-input-inline">
+            <input type="text" style="width: 300px;" name="resourcePath" required  lay-verify="required|url" placeholder="请输入资源url" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">资源描述</label>
+        <div class="layui-input-inline">
+            <input type="text" style="width: 300px;"  name="resourceDescribe" lay-verify="required"   placeholder="请输入资源描述" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+    <div class="layui-inline">
+    <label class="layui-form-label">资源类型</label>
+    <div class="layui-input-inline">
+    <select name="resourceTypeName" lay-verify="required" id="bg_id">
+    <option value="">请选择类型</option>
+    <option value="0">视频教程</option>
+    <option value="1">常用工具</option>
+    <option value="2">电子书</option>
+    <option value="3">影视娱乐</option>
+    <option value="4">常用网站</option>
+    </select>
+    </div>
+    </div>
+
+    </div>
+
+    <div class="layui-form-item">
+        　　<label class="layui-form-label">资源封面</label>
+        　　 <div class="layui-input-inline">
+        <input type="text" id="fileName"  placeholder="请选择图片"  disabled   autocomplete="off" class="layui-input">
+        　　　　<br><br>
+        　<!-- 预览区域 -->
+        <div class="layui-collapse" lay-accordion="" style="width: 399.5px">
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">展开图片</h2>
+                <div class="layui-colla-content" id="colla_img" style="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+        　　　　<button type="button" style="float: left" class="layui-btn" id="uploadPic"><i class="layui-icon">&#xe67c;</i>选择图片</button>
+        　　　　<button type="button" style="margin-left: -10%" class="layui-btn layui-btn-warm" id="uploadPicBtn"><i class="layui-icon layui-icon-upload-circle"></i>开始上传</button>
+        　　　　<!-- 隐藏的input,一个隐藏的input（用于保存文件url） -->
+        　　　　<input type="hidden" id="img_url" name="imgSrc" value=""/>
+
+
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">添加</button>
+            <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+
+
+    /*查看大图*/
+    function openImg() {
+        var idBar = '#showImg';
+        var src = $(idBar)[0].src;
+        var width = $(idBar).width();
+        var height = $(idBar).height();
+        var scaleWH = width / height;
+        var bigH = 550;
+        var bigW = scaleWH * bigH;
+        if (bigW > 1000) {
+            bigW = 1000;
+            bigH = bigW / scaleWH;
+        } // 放大预览图片
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1,
+            shadeClose: true,
+            area: [bigW + 'px', bigH + 'px'], //宽高
+            content: '<img width="' + bigW + '" src="' + src + '" />'
+        });
+    }
+    layui.use([ 'form', 'layer','upload','element'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var upload = layui.upload;
+        var element = layui.element;
+        //上传图片
+        var uploadInst = upload.render({
+            elem: '#uploadPic' //绑定元素
+            ,url: '/uploadResourceImg' //上传接口 [[@{/upload/img}]]
+            ,auto: false
+            ,bindAction: '#uploadPicBtn'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#fileName').val(file.name);  //展示文件名
+                    $('#colla_img').find('img').remove();
+                    $('#colla_img').append('<a href="#" onclick="openImg();"><img id="showImg" src="' + result + '" width="370px"></a>');
+                    // $('#preShow').attr('src', result); //图片链接（base64）
+                    element.render()
+                });
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    layer.msg('上传失败',{icon:5});
+                }
+                //上传成功
+                layer.msg('上传成功',{icon:6});
+                document.getElementById("img_url").value = res.data.src;
+            }
+            ,error: function(){
+                /*date_default_timezone_set("Asia/Shanghai");
+               //演示失败状态，并实现重传
+                 var dd=res.responseText.replace(/<\/?.+?>/g,"");
+               var text=dd.replace(/ /g,"");//去掉所有空格
+               o.msg("请求上传接口出现异常"+text),
+              console.log(text);
+               m(e) */
+
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+        //监听提交
+        form.on('submit(formLeaveMessage)', function(data){
+            var categoryName = $("#bg_id").find("option:selected").text();
+
+            $.ajax({
+                url:'/publishResource',
+                type:'post',
+                dataType:'json',
+                // contentType:'application/json',
+                // data:JSON.stringify(data.field),
+                data:{
+                    resourceName:data.field.resourceName,
+                    resourcePath:data.field.resourcePath,
+                    resourceDescribe:data.field.resourceDescribe,
+                    imgSrc:data.field.imgSrc,
+                    resourceTypeName:categoryName
+                },
+                success:function (msg) {
+                    if(msg.status==200){
+                        layer.closeAll('loading');
+                        layer.load(2);
+                        layer.msg("添加成功", {icon: 6});
+                        setTimeout(function(){
+                            layer.closeAll();//关闭所有的弹出层
+                        }, 1000);
+                        $("#reset").trigger("click");
+                        $('#demo1').attr('src', "/file/${sessionScope.user.headimg}");
+                        加载层-风格
+                    }else {
+                        layer.msg("发布失败", {icon: 5});
+                    }
+                }
+            })
+            return false;
+        });
+
+
+
+    });
+
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,351 @@
+﻿
+<!DOCTYPE html>
+
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="header::header-fragment">
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">
+</head>
+<title>文章 - ApeNixX</title>
+
+<!-- 比较好用的代码着色插件 -->
+<!--<link th:href="@{/static/static/css/prettify.css}" rel="stylesheet" />-->
+<!-- 本页样式表 -->
+<script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css">-->
+<!--<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">-->
+<link href="https://lib.baomitu.com/lightgallery/1.6.12/css/lightgallery.min.css" rel="stylesheet">
+<!--<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>-->
+<!--<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>-->
+<link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+<link th:href="@{/static/css/editormd/editormd.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/editormd/editormd.preview.min.css}" rel="stylesheet" />
+<link th:href="@{/static/static/css/detail.css}" rel="stylesheet" />
+<link th:href="@{/static/js/highlight/pojoaque.css}" rel="stylesheet" />
+<script src="http://apps.bdimg.com/libs/highlight.js/9.1.0/highlight.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script th:src="@{/static/js/lightgallery/lightgallery.js}"></script>
+
+<body>
+    <!-- 导航 -->
+    <nav th:replace="header::header-nav('article')">
+    </nav>
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <div class="blog-container">
+            <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+                <a th:href="@{/article/index/1}" title="网站首页">网站首页&nbsp;</a>
+                <a th:href="@{/category/1}" title="文章专栏">&nbsp;文章专栏&nbsp;</a>
+                <a><cite>&nbsp;<th:block th:text="${info.articleTitle}"></th:block></cite></a>
+            </blockquote>
+            <div class="blog-main">
+                <div class="blog-main-left">
+                    <!-- 文章内容（使用Kingeditor富文本编辑器发表的） -->
+                    <div class="article-detail shadow animated fadeInUp">
+                        <div class="article-detail-title">
+                            <th:block th:text="${info.articleTitle}"></th:block>
+                        </div>
+                        <div class="article-detail-info">
+                            <span th:class="${info.articleType == '原创'}? 'article_is_yc' :'article_is_zz'" th:text="${info.articleType}"></span>                            <i class="layui-icon layui-icon-log"></i><span th:text="${info.publishDate}"></span>
+                            <i class="layui-icon layui-icon-username"></i><span><th:block th:text="${info.originalAuthor}"></th:block></span>
+                            <i class="fa fa-eye fa-lg"></i><span><th:block th:text="${info.looks}"></th:block>浏览</span>
+                            <i class="layui-icon layui-icon-tabs"></i><span><a th:href="@{'/category/1?category='+${info.articleCategories}}"><th:block th:text="${info.articleCategories}"></th:block></a></span>
+                        </div>
+                        <hr/>
+                        <div class="markdown-body editormd-html-preview" style="width: 96%;" id="wordsView">
+                        <!--<div class="article-detail-content" id="wordsView">-->
+                            <th:block th:utext="${info.articleContent}"></th:block>
+
+                        </div>
+                        <div class="article-detail-copyright">
+                            <p>版权声明：本文由<a href="http://apenixx.top" target="_blank" style="color:#1E9FFF;margin:0 5px;" th:text="${info.originalAuthor}">ApeNixX</a>原创出品，转载请注明出处！</p>
+                            <!--<p>本文链接：<a th:href="@{'/article/details/'+${info.articleId}}">http://www.apenixx.top/article/details/<span th:text="${info.articleId}">52</span></a></p>-->
+                            <p>本文链接：<a th:href="@{${info.articleUrl}}" th:text="${info.articleUrl}">http://www.apenixx.top/article/details/</a></p>
+
+                        </div>
+                        <br>
+                        <th:block th:each="sortName:${info.tagValue}">
+                            <i class="fa fa-tag"></i>&nbsp;&nbsp;<a th:href="@{'/article/index/1?tag='+${sortName}}" th:text="${sortName}"></a>&nbsp;
+                        </th:block>
+                        <hr>
+                        <br>
+                        <div class="component-box">
+                            <a href="javascript:;" class="praise" blog-event="praise"><i class="fa fa-thumbs-up fa-fw"></i>点赞（<span id="praiseCnt" th:text="${info.likes}">1</span>）</a>
+                            <a href="javascript:;" class="reword" blog-event="reword">赏</a>
+                            <a href="javascript:;" class="share" blog-event="share"><i class="fa fa-share-alt fa-fw"></i>分享（<span id="shareCnt">2</span>）</a>
+                        </div>
+                        <div style="text-align:center;margin:10px;width:100%">
+                            <span>赞助本站，网站的发展离不开你们的支持！</span>
+                        </div>
+                    </div>
+                    <!-- 评论区域 -->
+                    <div class="blog-module shadow animated fadeInUp" style="box-shadow: 0 1px 8px #a6a6a6;">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom:0">
+                            <legend>来说两句吧</legend>
+                            <div class="layui-field-box">
+                                <form class="layui-form blog-editor" action="">
+                                    <div class="layui-form-item">
+                                        <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button class="layui-btn" lay-submit="formRemark" lay-filter="formRemark">提交评论</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </fieldset>
+                        <div class="blog-module-title">最新评论</div>
+                        <ul class="blog-comment">
+                            <li class="animated zoomIn">
+                                <div class="comment-parent">
+                                    <img th:src="@{/static/static/images/Logo_40.png}" alt="不落阁" />
+                                    <div class="info">
+                                        <span class="username">不落阁</span>
+                                    </div>
+                                    <div class="content">
+                                        我为大家做了模拟留言与回复！试试吧！
+                                    </div>
+                                    <p class="info info-footer"><span class="time">2017-03-18 18:09</span><a class="btn-reply" href="javascript:;" onclick="btnReplyClick(this)">回复</a></p>
+                                </div>
+                                <hr />
+                                <div class="comment-child">
+                                    <img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" />
+                                    <div class="info">
+                                        <span class="username">Absolutely</span><span>这是用户回复内容</span>
+                                    </div>
+                                    <p class="info"><span class="time">2017-03-18 18:26</span><a class="btn-reply" href="javascript:;" onclick="btnReplyClick1(this)">回复</a></p>
+                                </div>
+                                <div class="comment-child">
+                                    <img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" />
+                                    <div class="info">
+                                        <span class="username">Absolutely<font style="color: black;">&nbsp;回复&nbsp;</font>不落阁</span><span>这是第二个用户回复内容</span>
+                                    </div>
+                                    <p class="info"><span class="time">2017-03-18 18:26</span><a class="btn-reply" href="javascript:;" onclick="btnReplyClick1(this)">回复</a></p>
+                                </div>
+                                <!-- 回复表单默认隐藏 -->
+                                <div class="replycontainer layui-hide">
+                                    <form class="layui-form" action="">
+                                        <div class="layui-form-item">
+                                            <textarea name="replyContent" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <button class="layui-btn" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="blog-main-right">
+                    <!--右边悬浮 平板或手机设备显示-->
+                    <div class="category-toggle"><i class="fa fa-chevron-left"></i></div><!--这个div位置不能改，否则需要添加一个div来代替它或者修改样式表-->
+                    <div class="blog-card shadow   animated fadeInRight">
+                        <div class="blog-card-title">
+                            <span class="icon"><i class="layui-icon" aria-hidden="true">&#xe66e;</i></span>
+                            <span class="text">标签云</span>
+                        </div>
+                        <!--<div class="hotusers-header"><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;标签云</div>-->
+                        <div class="tag-cloud">
+                            <div class="widget-tag-cloud" id="wrap">
+                                <a th:each="tag:${tags}" th:text="${tag.tagName}"
+                                   th:href="@{'/article/index/1?tag='+${tag.tagName}}"></a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="blog-card shadow animated fadeInRight">
+                        <div class="blog-card-title">
+                            <span class="icon"><i class="layui-icon" aria-hidden="true">&#xe669;</i></span>
+                            <span class="text">最新文章</span>
+                        </div>
+                        <!--<div class="hotusers-header"><i class="fa fa-list-alt"></i>&nbsp;相似文章</div>-->
+                        <ul class="blog-card-ul">
+                            <li th:each="lk,iterStar:${time}"><span th:class="${iterStar.count}<3 ?'layui-badge':'layui-badge layui-bg-blue'" th:text="${iterStar.count}">1</span><a th:href="@{'/article/details/'+${lk.articleId}}" th:text="${lk.articleTitle}">Web安全之跨站请求伪造CSRF</a><span style="font-size: 12px;float: right;" th:text="${lk.publishDate}"></span></li>
+
+                        </ul>
+                    </div>
+                    <!--<br>-->
+                    <!--<div class="blog-card shadow animated fadeInRight">-->
+                        <!--<div class="blog-card-title">-->
+                            <!--<span class="icon"><i class="fa fa-random"></i></span>-->
+                            <!--<span class="text">随便看看</span>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;<div class="hotusers-header"><i class="fa fa-random"></i>&nbsp;随便看看</div>&ndash;&gt;-->
+                        <!--<ul class="blog-card-ul">-->
+                            <!--<li><span class="layui-badge">1</span><a href="detail.html">Web安全之跨站请求伪造CSRF</a><span style="font-size: 12px;float: right;">2469阅/0评</span></li>-->
+                            <!--<li><span class="layui-badge">2</span><a href="detail.html">ASP.NET MVC 防范跨站请求伪造（CSRF）</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">3</span><a href="detail.html">常用正则表达式</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">4</span><a href="detail.html">EF CodeFirst数据迁移常用指令</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">5</span><a href="detail.html">浅谈.NET Framework基元类型</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">6</span><a href="detail.html">C#基础知识回顾-扩展方法</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">7</span><a href="detail.html">一步步制作时光轴（一）（HTML篇）</a></li>-->
+                            <!--<li><span class="layui-badge layui-bg-blue">8</span><a href="detail.html">一步步制作时光轴（二）（CSS篇）</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <br>
+                    <div class="blog-card shadow animated fadeInRight">
+                        <div class="blog-card-title">
+                            <span class="icon"><i class="fa fa-random"></i></span>
+                            <span class="text">随便看看</span>
+                        </div>
+                        <ul class="blog-card-ul hotArticle">
+                            <li th:each="rd:${rand}" class="animated fadeInRight"><a class="aa" target="_blank" th:href="@{'/article/details/'+${rd.articleId}}"><span class="imgg"><img th:src="@{${rd.articleCover}}" th:alt="${rd.articleTitle}"></span><span class="spann" th:text="${rd.articleTitle}">排序的升级版—快速排序以及归并排序</span><span th:text="${rd.publishDate}">2018-08-22 15:36</span><span style="float: right"><i class="fa fa-eye"></i>&nbsp;<th:block th:text="${rd.looks}"></th:block>&nbsp;阅</span></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <footer class="blog-footer">
+        <p><span>Copyright</span><span>&copy;</span><span>2017</span><a href="http://www.lyblogs.cn">不落阁</a><span>Design By LY</span></p>
+        <p><a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备20013507号</a></p>
+    </footer>
+    <!--侧边导航-->
+
+    <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+        <li sec:authorize="hasAnyRole('ROLE_USER')" class="layui-nav-item" style="margin-bottom: 30px;">
+            <a href="javascript:;" class="blog-user">
+                <!--<img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" title="Absolutely" />-->
+                <img style=" width: 40px;height: 40px;border-radius: 50px;" th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" />
+                <!--<sec:authentication property="principal.id"/>-->
+                <span sec:authentication="name"></span>&nbsp;
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="@{/user/user}">基本资料</a></dd>
+                <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+                <dd><a th:href="@{/user/user}">安全设置</a></dd>
+                <dd sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')"><a th:href="@{/admin/index}">后台管理</a></dd>
+                <dd><a th:href="@{/logout}">退出登录</a></dd>
+            </dl>
+        </li>
+
+        <li class="layui-nav-item">
+            <a th:href="@{/article/index/1}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+        </li>
+        <li class="layui-nav-item  layui-this">
+            <a th:href="@{/category/1}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/archives}"><i class="fa fa-calendar-check-o fa-fw"></i>&nbsp;归档</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/resource}"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/timeline}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/user/about}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/login}">&nbsp;&nbsp;登录</a>
+        </li>
+        <li sec:authorize="anonymous" class="layui-nav-item" style="float: right;">
+            <a th:href="@{/user/register}">&nbsp;&nbsp;注册</a>
+        </li>
+    </ul>
+    <!--分享窗体-->
+    <div class="bdsharebuttonbox bdshare-button-style0-32" data-tag="share_1" style="width: 200px; display: none;" data-bd-bind="1581353425525">
+        <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+        <a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    </div>
+
+    <!--遮罩-->
+    <div class="blog-mask animated layui-hide"></div>
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+    <!-- require MetingJS -->
+    <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+            id="168853794"
+            lrc-type="0"
+            server="netease"
+            order="random"
+            type="playlist"
+            fixed="true"
+            list-olded="true"
+            list-folded="true"
+            list-max-height="400px"
+            preload="none"
+
+    >
+    </meting-js>
+
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!-- layui.js -->
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+
+    <!-- 自定义全局脚本 -->
+    <!--<script th:src="@{/static/static/js/global.js}"></script>-->
+    <!-- 比较好用的代码着色插件 -->
+    <!--<script th:src="@{/static/static/js/prettify.js}"></script>-->
+    <!-- 本页脚本 -->
+    <script th:src="@{/static/static/js/detail.js}"></script>
+    <script th:src="@{/static/static/js/details2.js}"></script>
+
+    <!--放大图片插件-->
+    <script th:src="@{/static/js/lightgallery/picturefill.min.js}"></script>
+    <script th:src="@{/static/js/lightgallery/lg-pager.js}"></script>
+    <script th:src="@{/static/js/lightgallery/lg-autoplay.js}"></script>
+    <script th:src="@{/static/js/lightgallery/lg-fullscreen.js}"></script>
+    <script th:src="@{/static/js/lightgallery/lg-zoom.js}"></script>
+        <!--百度分享-->
+    <script th:inline="javascript"  th:src="@{/static/static/js/share.js}">
+        var id = [[${info.articleId}]];
+        var img = [[${info.articleCover}]];
+        var title = [[${info.articleTitle}]];
+    </script>
+    <!--动态改变便签颜色大小-->
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var obj=$("#wrap a");//获取a标签中的数据
+
+            function rand(num){
+//parseInt();将字符串转为整数
+//Math.random()；生成随机数
+                return parseInt(Math.random()*num+1);
+            }
+
+            function randomcolor(){
+                var str=Math.ceil(Math.random()*16777215).toString(16);
+                if(str.length<6){
+                    str="0"+str;
+                }
+                return str;
+            }
+
+            for(len=obj.length,i=len;i--;){
+                obj[i].style.left=rand(20)+"px";//标签左右间距
+                obj[i].style.top=rand(20)+"px";//标签上下间距
+                obj[i].className="color"+rand(5);
+                obj[i].style.zIndex=rand(5);//设置元素的堆叠顺序
+                obj[i].style.fontSize=rand(5)+15+"px";//随机字体大小这里是10-20
+                obj[i].style.color="#"+randomcolor();//字体颜色
+                obj[i].style.padding=rand(10)+"px";
+            }
+        });
+
+    </script>
+<script>
+    window.onload = function() {
+        var hash = window.location.hash;
+        if(hash!=""){
+            window.location.hash = window.location.hash;
+            window.location = window.location;
+            window.location = window.location;
+
+        }
+
+    }
+</script>
+</body>
+</html>

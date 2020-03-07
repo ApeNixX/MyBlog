@@ -1,0 +1,94 @@
+﻿
+
+/*博主信息*/
+.siteRunningTime{
+    display: block;
+}
+.site-info{
+    margin-top: 20px;
+    /*box-shadow: 0 2px 5px 0 rgba(33, 22, 22, 0.2), 0 2px 10px 0 rgba(0,0,0,0.12);*/
+    margin-left: 15px;
+}
+.site-default{
+    /*display: block;*/
+    list-style: none;
+    font-size: 14px;
+    line-height: 25px;
+    padding-bottom: 25px;
+}
+.tag-cloud{
+    padding-top: 9px;
+}
+.widget-tag-cloud{
+    margin-left: 20px;
+    display: inline-block;
+}
+.widget-tag-cloud a{
+    margin-right: 5px;
+    display: inline-block;
+}
+.widget-tag-cloud a:hover{
+    text-decoration: underline;
+}
+.blogerinfo {
+    text-align: center;
+    padding: 0 15px;
+    background: #fff;
+    margin-bottom: 15px;
+}
+
+.blogerinfo-figure {
+    display: inline-block;
+    margin: 20px auto;
+}
+
+    .blogerinfo-figure img {
+        border-radius: 50%;
+        max-width: 47%;
+    }
+
+.blogerinfo-nickname {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+}
+
+.blogerinfo-introduce {
+    margin: 15px auto;
+    font-size: 18px;
+    width: 90%;
+}
+
+.blogerinfo-location {
+    color: #808080;
+    margin: 15px;
+}
+
+.blogerinfo-contact {
+    padding: 15px;
+    padding-top: 5px;
+}
+
+    .blogerinfo-contact > a {
+        padding: 0 10px;
+    }
+/*博主信息END*/
+
+/*友情链接*/
+.blogroll > li {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2px 5px;
+}
+/*友情链接END*/
+
+/*一路走来和后台记录*/
+.footprint > dt {
+    color: #01AAED;
+}
+
+.footprint > dd {
+    text-indent: 1.3em;
+    padding: 2px 0;
+}
+/*一路走来和后台记录END*/

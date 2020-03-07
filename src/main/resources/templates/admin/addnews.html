@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>添加新闻</title>
+    <link th:href="@{/static/admin/layui/css/layui.css}" rel="stylesheet" />
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+        <!--这里要改成自己的资源路径-->
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+      
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>日记编辑</legend>
+</fieldset>
+<form class="layui-form"  enctype="multipart/form-data" action="" style="margin-left: 30px">
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">标题</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<input type="text" name="fname" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">-->
+        <!--</div>-->
+    <!--</div>-->
+
+   <!---->
+
+    <!--<input type="hidden" name="headimg" id="headimg" value="" >-->
+
+    <!--<div class="layui-form-item">-->
+      <!---->
+            <!--<div class="layui-inline">-->
+                    <!--<label class="layui-form-label">类型</label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<select name="city" lay-verify="required">-->
+                        <!--<option value="">请选择类型</option>-->
+                        <!--<option value="0">北京</option>-->
+                        <!--<option value="1">上海</option>-->
+                        <!--<option value="2">广州</option>-->
+                        <!--<option value="3">深圳</option>-->
+                        <!--<option value="4">杭州</option>-->
+                      <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+        <!---->
+    <!--</div>-->
+
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <!--<div class="layui-input-block">-->
+                 <!--&lt;!&ndash;<textarea placeholder="请输入新闻内容" id="demo" name="content" class="layui-textarea"></textarea>&ndash;&gt;-->
+                <!--<textarea id="demo" style="display: none;" name="content"></textarea>-->
+        <!--</div>-->
+        <div class="layui-input-block">
+
+                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+        </div>
+    </div>
+    <!--<div class="layui-form-item layui-form-text">-->
+        <!--<label class="layui-form-label">来源</label>-->
+        <!--<div class="layui-input-inline">-->
+                <!--<input type="text" name="idcard" lay-verify="identity"   placeholder="请输入新闻来源" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+    <!--</div>-->
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
+            <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+
+
+    layui.use([ 'form', 'layer','upload','layedit'], function () {
+        var form = layui.form();
+        var layer = layui.layer;
+        var upload = layui.upload;
+        var layedit = layui.layedit;
+        //layedit.set要放在build的上面
+        layedit.set({
+            uploadImage: {
+                url: '/uploadFile' //接口url
+                ,type: 'post' //默认post
+            }
+        });
+
+        //评论和留言的编辑器
+        var editIndex = layedit.build('remarkEditor');
+        //评论和留言的编辑器的验证
+        layui.form().verify({
+            content: function (value) {
+                value = $.trim(layedit.getText(editIndex));
+                if (value == "") return "至少得有一个字吧";
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+        form.on('submit(formLeaveMessage)', function(data){
+            $.ajax({
+                url:'/publishDiary',
+                type:'post',
+                dataType:'json',
+                // contentType:'application/json',
+                // data:JSON.stringify(data.field),
+                data:{
+                    content:data.field.editorContent
+                },
+                success:function (msg) {
+                    if(msg.status==200){
+                        layer.closeAll('loading');
+                        layer.load(2);
+                        layer.msg("添加成功", {icon: 6});
+                        setTimeout(function(){
+                            layer.closeAll();//关闭所有的弹出层
+                        }, 1000);
+                        $("#reset").trigger("click");
+                        $('#demo1').attr('src', "/file/${sessionScope.user.headimg}");
+                        加载层-风格
+                    }else {
+                        layer.msg("发布失败", {icon: 5});
+                    }
+                }
+            })
+            return false;
+        });
+
+
+       
+    });
+
+
+</script>
+</body>
+</html>
+

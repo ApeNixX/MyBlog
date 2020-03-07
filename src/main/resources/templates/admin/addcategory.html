@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>添加类型</title>
+        <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}" media="all">
+        <script th:src="@{/static/admin/layui/layui.js}"></script>
+        <!--这里要改成自己的资源路径-->  
+        <script th:src="@{/static/admin/js/jquery.min.js}"></script>
+      
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>添加类型</legend>
+</fieldset>
+<form class="layui-form"  action="" style="margin-left: 30px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-inline">
+            <input type="text" name="categoryName" required  lay-verify="required" placeholder="请输入类型" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+    layui.use([ 'form', 'layer'], function () {
+        var form = layui.form;
+            layer = layui.layer
+          
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // var categoryName = data.field.categoryName;
+            $.ajax({
+                url:'/admin/addArticleCategories',
+                type:'post',
+                dataType: "json",
+                // data:JSON.stringify(data.field),
+                data:{
+                    'categoryName':data.field.categoryName
+                },
+                success:function (data) {
+                    if(data.status==200){
+                        layer.closeAll('loading');
+                        layer.load(2);
+                        layer.msg("添加成功", {icon: 6});
+                        setTimeout(function(){
+                            layer.closeAll();//关闭所有的弹出层
+                        }, 1000);
+                        $("#reset").trigger("click");
+                        $('#demo1').attr('src', "/file/${sessionScope.user.headimg}");
+                        加载层-风格
+                    }else if (data.status==500) {
+                        layer.msg("类型已存在", {icon: 5});
+                    }
+
+                }
+            })
+            return false;//false：阻止表单跳转  true：表单跳转
+        });
+
+
+       
+    });
+
+
+</script>
+</body>
+</html>
+

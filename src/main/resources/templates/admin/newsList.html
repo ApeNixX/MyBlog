@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>查看新闻</title>
+        <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}" media="all">
+        <script th:src="@{/static/admin/layui/layui.js}"></script>
+        <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+
+        <!--这里要改成自己的资源路径-->
+        <style>
+            body {
+                margin: 100px;
+            }
+            .layui-table-cell{
+                height: 100%;
+                max-width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+           
+            <form class="layui-form" action="" style="margin-top: -3%;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline">
+                        <select name="categoryName" lay-verify="required" lay-filter="business" id="bg_id">
+                        <option value="">请选择类型</option>
+
+                      </select>
+                    </div>
+                </div>
+          
+
+            <div class="layui-inline">
+                        <div class="layui-input-inline">
+                          <button class="layui-btn" lay-submit lay-filter="formDemo">立即搜索</button>
+                          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+            </div>
+            </div>
+            </form>
+        <table class="layui-hide" id="demo" lay-filter="test"></table>
+
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+    </body>
+    <script th:src="@{/static/admin/layui/layui.js}"></script>
+    <!--这里要改成自己的资源路径-->
+    <script>
+
+        layui.use('table', function() {
+            var table = layui.table; //表格
+
+
+            //向世界问个好
+            layer.msg('Hello World');
+            var imagebox = function(d){
+                return '<img src="'+d.articleCover+'"  style="max-width: 100%;max-height: 100%;display: block;margin: auto;"/>';
+            };
+            //执行一个 table 实例
+            table.render({
+                elem: '#demo',
+                height: 500,
+                width: 1600,
+                url: '/admin/getBlogList',//数据接口
+                title: '博客表',
+                id: 'table1',
+                page: true, //开启分页
+                toolbar: 'default' ,//开启工具栏，此处显示默认图标，可以自定义模板，详见文档,
+                totalRow: true ,//开启合计行
+                cols: [//表头
+                    [ 
+                        { type: 'checkbox', fixed: 'left' }, 
+                        { field: 'articleId', title: '序号', width: 150, sort: true },
+                        { field: 'articleCover', title: '封面', width: 150,templet:imagebox},
+                        { field: 'originalAuthor', title: '作者', width: 150 },
+                        { field: 'articleTitle', title: '标题', width: 250 },
+                        { field: 'articleCategories', title: '类型', width: 200 },
+                        { field: 'looks', title: '浏览量', width: 80 },
+                        { field: 'likes', title: '点赞量', width: 80 },
+                        { field: 'publishDate', title: '发布时间', width: 200,sort: true },
+                        { fixed: 'right', title:'操作',width: 200, align: 'center', toolbar: '#barDemo' }
+                    ]
+                ]
+            });
+
+            //监听 头 工具栏事件
+            table.on('toolbar(test)', function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id),
+                    data = checkStatus.data; //获取选中的数据
+                switch(obj.event) {
+                    case 'add':
+                        layer.msg('添加');
+                        break;
+                    case 'update':
+                        if(data.length === 0) {
+                            layer.msg('请选择一行');
+                        } else if(data.length > 1) {
+                            layer.msg('只能同时编辑一个');
+                        } else {
+                            layer.alert('编辑 [id]：' + checkStatus.data[0].id);
+                        }
+                        break;
+                    case 'delete':
+                        if(data.length === 0) {
+                            layer.msg('请选择一行');
+                        } else {
+                            layer.msg('删除');
+                        }
+                        break;
+                };
+            });
+            //监听 行 工具事件
+            table.on('tool(test)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data ,//获得当前行数据
+                    layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'detail') {
+                    layer.msg('查看操作');
+                } else if(layEvent === 'del') {
+                    layer.confirm('真的删除行么', function(index) {
+                        $.ajax({
+                            type:"post",
+                            url:"/admin/deleteArticle",
+                            dataType: "json",
+                            data:{id:data.articleId},
+                            success:function(result){
+                                if(result.status==200){
+                                    layer.msg("删除成功", {icon: 6});
+                                    setTimeout(function () {
+                                        obj.del(); //删除对应行（tr）的DOM结构
+                                        layer.close(index);
+                                    },1000)
+
+                                }else {
+                                    layer.msg("删除失败", {icon: 5})
+                                }
+                            }
+                        })
+                    });
+                } else if(layEvent === 'edit') {
+                    layer.msg('编辑操作:<br>' + JSON.stringify(data));
+                    window.location.href="/admin/draft?id=" + data.id;
+                }
+            });
+
+
+
+            layui.use('form', function(){
+                var $ = layui.jquery;
+
+                var form = layui.form;
+
+                // //监听提交
+                // form.on('submit(formDemo)', function(data){
+                //     layer.msg(JSON.stringify(data.field));
+                //     return false;
+                // });
+                $(function () {
+
+                    // form.on('select(business)', function (data) {
+                    $.ajax({
+                        type: "get",
+                        url: '/admin/getCategories',  //从数据库查询返回的是个list
+                        dataType: "json",
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        async: false,
+                        cache: false,
+                        success: function (data) {
+                            $.each(data.data, function (index, item) {
+                                $('#bg_id').append(new Option(item.categoryName, item.id));//往下拉菜单里添加元素
+                            })
+
+                            form.render("select");//菜单渲染 把内容加载进去
+                        }
+
+                    })
+
+                    // });
+                })
+
+                form.on('submit(formDemo)', function(data) {
+                    // var formData = data.field;
+                     // layer.msg(formData);
+                    //var categoryName = formData.categoryName;
+                    var categoryName = $("#bg_id").find("option:selected").text();
+
+                    table.reload('table1', {
+                        page: {
+                            curr: 1
+                        },
+                        where: {
+                            categoryName:categoryName
+                        },
+                        method: 'post',
+                        url: '/admin/searchArticle',
+                    });
+                    return false;
+                });
+
+            });
+
+
+
+        });
+
+
+    </script>
+
+</html>

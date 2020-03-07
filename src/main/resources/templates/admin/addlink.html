@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>添加新闻</title>
+    <link th:href="@{/static/admin/layui/css/layui.css}" rel="stylesheet" />
+    <script th:src="@{/static/static/plug/layui/layui.js}"></script>
+    <!--这里要改成自己的资源路径-->
+    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>友链添加</legend>
+</fieldset>
+<form class="layui-form"  action="" style="margin-left: 30px">
+
+
+    <div class="layui-form-item">
+    <label class="layui-form-label">博主名字</label>
+    <div class="layui-input-inline">
+    <input type="text" name="blogger" required  lay-verify="required" placeholder="请输入博主名字" autocomplete="off" class="layui-input">
+    </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">博客URL</label>
+        <div class="layui-input-inline">
+            <input type="text" name="url" required  lay-verify="required|url" placeholder="请输入博客url" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+    <label class="layui-form-label">博主头像</label>
+    <div class="layui-input-inline">
+    <input type="text" name="img" lay-verify="required|url"   placeholder="请输入博主头像url" autocomplete="off" class="layui-input">
+    </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">添加</button>
+            <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+
+
+    layui.use([ 'form', 'layer'], function () {
+        var form = layui.form();
+        var layer = layui.layer;
+
+
+        //监听提交
+        form.on('submit(formLeaveMessage)', function(data){
+            $.ajax({
+                url:'/publishFriendLink',
+                type:'post',
+                dataType:'json',
+                // contentType:'application/json',
+                // data:JSON.stringify(data.field),
+                data:{
+                    blogger:data.field.blogger,
+                    url:data.field.url,
+                    img:data.field.img
+                },
+                success:function (msg) {
+                    if(msg.status==200){
+                        layer.closeAll('loading');
+                        layer.load(2);
+                        layer.msg("添加成功", {icon: 6});
+                        setTimeout(function(){
+                            layer.closeAll();//关闭所有的弹出层
+                        }, 1000);
+                        $("#reset").trigger("click");
+                        $('#demo1').attr('src', "/file/${sessionScope.user.headimg}");
+                        加载层-风格
+                    }else {
+                        layer.msg("发布失败", {icon: 5});
+                    }
+                }
+            })
+            return false;
+        });
+
+
+
+    });
+
+
+</script>
+</body>
+</html>
+

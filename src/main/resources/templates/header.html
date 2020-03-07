@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="header-fragment">
+    <meta http-equiv="Content-Type" content="text/html; Charset=gb2312">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="shortcut icon" th:href="@{/static/static/images/icon.png}" type="image/x-icon">
+
+    <link rel="stylesheet" th:href="@{/static/admin/layui/css/layui.css}">
+    <link th:href="@{/static/static/plug/font-awesome/css/font-awesome.min.css}" rel="stylesheet" />
+
+    <!--全局样式表-->
+    <link th:href="@{/static/static/css/global.css}" rel="stylesheet" />
+
+
+
+
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="blog-nav layui-header"  th:fragment="header-nav(path)">
+    <div class="blog-container">
+        <!-- QQ互联登陆 -->
+        <!-- <a href="javascript:;" class="blog-user">
+            <i class="fa fa-qq"></i>
+        </a>
+        <a href="javascript:;" class="blog-user layui-hide">
+            <img src="../images/Absolutely.jpg" alt="Absolutely" title="Absolutely" />
+        </a>
+        <!-- 不落阁 -->
+        <a class="blog-logo" th:href="@{/article/index/1}">ApeNixX</a>
+        <!-- 导航菜单 -->
+        <ul class="layui-nav" lay-filter="nav">
+            <li class="layui-nav-item" th:class="${path} == 'home'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/article/index/1}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+            </li>
+            <li class="layui-nav-item" th:class="${path} == 'article'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/category/1}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+            </li>
+            <li class="layui-nav-item" th:class="${path} == 'archives'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/user/archives}"><i class="fa fa-calendar-check-o fa-fw"></i>&nbsp;归档</a>
+            </li>
+            <li class="layui-nav-item" th:class="${path} == 'resource'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/user/resource}"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+            </li>
+            <li class="layui-nav-item" th:class="${path} == 'timeline'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/user/timeline}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+            </li>
+            <li class="layui-nav-item" th:class="${path} == 'about'?'layui-nav-item layui-this':'layui-nav-item'">
+                <a th:href="@{/user/about}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+            </li>
+            <li sec:authorize="anonymous" class="layui-nav-item" style="margin-left: 20px;">
+                <a th:href="@{/user/login}">登录</a>
+            </li>
+            <li sec:authorize="anonymous" class="layui-nav-item">
+                <a th:href="@{/user/register}">注册</a>
+            </li>
+             <li sec:authorize="hasAnyRole('ROLE_USER')" class="layui-nav-item">
+                <a href="javascript:;" class="blog-user">
+                    <!--<img th:src="@{/static/static/images/Absolutely.jpg}" alt="Absolutely" title="Absolutely" />-->
+                   <img th:src="@{${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatarImgUrl}}" />
+                    <!--<sec:authentication property="principal.id"/>-->
+                    <span sec:authentication="name"></span>&nbsp;
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/user/user}">基本资料</a></dd>
+                    <dd><a class="news" th:href="@{/user/user}">我的消息</a></dd>
+                    <dd><a th:href="@{/user/user}">安全设置</a></dd>
+                    <dd sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')"><a th:href="@{/admin/index}">后台管理</a></dd>
+                    <dd><a th:href="@{/logout}">退出登录</a></dd>
+                </dl>
+                </li>
+        </ul>
+
+
+        <!-- 手机和平板的导航开关 -->
+        <a class="blog-navicon" href="javascript:;">
+            <i class="fa fa-navicon"></i>
+        </a>
+    </div>
+</nav>
+
+<script th:src="@{/static/static/plug/layui/layui.js}"></script>
+<!-- 全局脚本 -->
+<script th:src="@{/static/static/js/global.js}"></script>
+
+
+</body>
+</html>
